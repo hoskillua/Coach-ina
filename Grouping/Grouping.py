@@ -1,6 +1,14 @@
 import sys
 
 
+def classification_mapping(classification):
+    if classification != '10':
+        return classification[0].upper()
+
+
+print(classification_mapping('spade'))
+
+
 def isSymbol(variable):
     letters = ['C', 'S', 'D', 'H']
     if (variable[0] in letters):
@@ -77,19 +85,25 @@ features = [
 #     ('C', 750, 310),
 # ]
 
-symbols = list(filter(isSymbol, features))
-numbers = list(filter(isNumber, features))
 
-minDists = [('-1', sys.maxsize)] * len(numbers)
+def grouping(features):
+    symbols = list(filter(isSymbol, features))
+    numbers = list(filter(isNumber, features))
 
-for n in range(len(numbers)):
-    for s in range(len(symbols)):
-        dist = (numbers[n][1] - symbols[s][1]) ** 2 + \
-            (numbers[n][2] - symbols[s][2]) ** 2
-        if dist < minDists[n][1]:
-            minDists[n] = (symbols[s][0], dist)
-    numbers[n] = (numbers[n][0], minDists[n][0])
+    minDists = [('-1', sys.maxsize)] * len(numbers)
 
-print(set(numbers))
+    cards = [()] * len(numbers)
+    for n in range(len(numbers)):
+        for s in range(len(symbols)):
+            dist = (numbers[n][1] - symbols[s][1]) ** 2 + \
+                (numbers[n][2] - symbols[s][2]) ** 2
+            if dist < minDists[n][1]:
+                minDists[n] = (symbols[s][0], dist)
+        cards[n] = (numbers[n][0], minDists[n][0])
 
-#Data = [(A,S),(2,D),(3,S),(4,H),(5,C)]
+    print(set(cards))
+
+
+grouping(features)
+
+# Data = [(A,S),(2,D),(3,S),(4,H),(5,C)]
