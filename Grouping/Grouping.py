@@ -6,9 +6,6 @@ def classification_mapping(classification):
         return classification[0].upper()
 
 
-print(classification_mapping('spade'))
-
-
 def isSymbol(variable):
     letters = ['C', 'S', 'D', 'H']
     if (variable[0] in letters):
@@ -66,26 +63,6 @@ features = [
     ('K', 214, 471)
 ]
 
-# features = [
-#     ('A', 790, 70),
-#     ('A', 810, 330),
-#     ('A', 440, 130),
-#     ('Q', 290, 179),
-#     ('10', 200, 220),
-#     ('K', 150, 280),
-#     ('J', 135, 340),
-#     ('H', 275, 250),
-#     ('H', 240, 295),
-#     ('D', 245, 355),
-#     ('S', 355, 195),
-#     ('S', 410, 170),
-#     ('C', 465, 155),
-#     ('C', 850, 100),
-#     ('C', 800, 200),
-#     ('C', 750, 310),
-# ]
-
-
 def grouping(features):
     symbols = list(filter(isSymbol, features))
     numbers = list(filter(isNumber, features))
@@ -105,5 +82,3 @@ def grouping(features):
 
 
 grouping(features)
-
-# Data = [(A,S),(2,D),(3,S),(4,H),(5,C)]
