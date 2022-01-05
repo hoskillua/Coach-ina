@@ -50,9 +50,9 @@ def NonOverLapping(path,modelPath):
 
 def main():
 
-    path="Grouping/AcetoFive.jpeg"
-    modelPath="Model/SVC_model.joblib"
-    AlgoNum=0
+    path="../special/QC15.jpg"
+    modelPath="Model/model.joblib"
+    AlgoNum=1
 
     if(AlgoNum==0 or AlgoNum==2):
         OverLapping(path,modelPath)

@@ -187,8 +187,8 @@ import os
 MAX_ANGLE=160
 MIN_ANGLE=20
 
-MAX_AREA=5000000
-MIN_AREA=10000
+MAX_AREA=0
+MIN_AREA=0
 
 TRANS_CARD_HIEGHT=350
 TRANS_CARD_WIDTH=250
@@ -239,6 +239,14 @@ def CalcArea(x,y):
 
 ###Preprocessing Step###
 def preprocessingStep(img):
+
+    global MAX_AREA,MIN_AREA
+
+    h=img.shape[0]
+    w=img.shape[1]
+
+    MAX_AREA=0.314*w*h
+    MIN_AREA=0.014*w*h
 
     grayImg=rgb2gray(img)
     
