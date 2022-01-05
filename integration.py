@@ -39,7 +39,12 @@ def NonOverLapping(path,modelPath):
         # io.show()
         # io.imshow(corner[1]/255.0) 
         # io.show()
-        cards.append((predict(corner[0]/255.0,modelPath),predict(corner[1]/255.0,modelPath)))
+        p1=predict(corner[0]/255.0,modelPath)
+        p2=predict(corner[1]/255.0,modelPath)
+
+        p1=classification_mapping(p1)
+        p2=classification_mapping(p2)
+        cards.append((p1,p2))
 
     print("Cards are:", cards)
     print("Total Number of Cards:", len(cards))
@@ -47,7 +52,7 @@ def NonOverLapping(path,modelPath):
 
 def main():
 
-    path="special/2.jpeg"
+    path="special/7.jpeg"
     modelPath="Coach-ina/Model/model.joblib"
     AlgoNum=2
 
