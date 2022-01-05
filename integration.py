@@ -70,11 +70,11 @@ def main():
         NonOverLapping(path, modelPath)
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
-    try:
-        pass
+#     try:
+#         pass
 
-    except:
-        print("Sea7k trb")
+#     except:
+#         print("Sea7k trb")

@@ -128,7 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+.joblib
 Model/KNN_model.joblib
 
 .jpg

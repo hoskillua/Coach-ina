@@ -6,16 +6,17 @@ from skimage import data, io, filters, feature, measure, transform, morphology
 import matplotlib.pylab as plt
 import numpy as np
 import skimage
-import skimage.io as io
 import skimage.exposure
 import skimage.feature
 import skimage.filters
+import skimage.io as io
 import skimage.morphology
 import skimage.transform
-from skimage.filters import threshold_otsu
 from joblib import load
-import sys
-import skimage.io as io
+from skimage import transform, util
+from skimage.filters import gaussian, threshold_otsu
+from skimage.transform import AffineTransform, rotate, warp
+from sklearn import preprocessing
 from sklearn.neighbors import KNeighborsClassifier
 import cv2
 
@@ -149,9 +150,9 @@ def getSymboles(image):
 def predict(image, modelPath='model/KNN_model.joblib'):
     # load the model
     model = load(modelPath)
-    prediction = model.predict([image.flatten()])[0]
-    # probabilities = model.predict_proba([image.flatten()])[0]
-    # classIndex =  np.where(model.classes_ == prediction)[0]
+    prediction =  model.predict([image.flatten()])[0]
+    probabilities = model.predict_proba([image.flatten()])[0]
+    classIndex =  np.where(model.classes_ == prediction)[0]
 
     return prediction, 1  # probabilities[classIndex]
 
@@ -196,8 +197,14 @@ def grouping(features):
 
 ############################################## Non Overlapping Algo  #######################################################################################
 
+import os
+
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
 ###Imports###
-#import cv2
+from skimage import data, feature, filters, io, measure, morphology, transform
+from skimage.color import rgb2gray
 
 ####Algo Constants###
 MAX_ANGLE = 160
