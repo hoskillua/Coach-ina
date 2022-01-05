@@ -12,19 +12,17 @@ def OverLapping(path,modelPath):
 
     image = io.imread(path,as_gray=True)
 
-    # io.imshow(image) 
-    # io.show()
     symbolesList = getSymboles(image)
     features = []
     for symbol in symbolesList:
-        io.imshow(symbol[0]) 
-        io.show()
-        prediction = predict(symbol[0],modelPath)
-        prediction = classification_mapping(prediction)
-        features.append((prediction, symbol[1], symbol[2]))
+        prediction, prob = predict(symbol[0],modelPath)
+        if (prob > 0.8):
+            prediction = classification_mapping(prediction)
+            features.append((prediction, symbol[1], symbol[2]))
     cards = grouping(features)
     print("Cards are:", cards)
     print("Total Number of Cards:", len(cards))
+    io.imshow(image); io.show()
 
 def NonOverLapping(path,modelPath):
 

@@ -11,6 +11,8 @@ import skimage.transform
 from skimage.filters import threshold_otsu
 from joblib import load
 import sys
+from sklearn.neighbors import KNeighborsClassifier
+
 
 
 def segmentation(img):
@@ -128,7 +130,10 @@ def predict(image, modelPath='model/KNN_model.joblib'):
     # load the model
     model = load(modelPath)
     prediction =  model.predict([image.flatten()])[0]
-    return prediction
+    # probabilities = model.predict_proba([image.flatten()])[0]
+    # classIndex =  np.where(model.classes_ == prediction)[0]
+
+    return prediction, 1 #probabilities[classIndex]
 
 
 # map the classes names
