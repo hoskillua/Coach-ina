@@ -93,7 +93,7 @@ def getSymboles(image):
     img = skimage.filters.gaussian(img, sigma=2)
     segm = segmentation(img)
     
-    io.imshow(segm); io.show()
+    # io.imshow(segm); io.show()
 
     countours = contour_detection(segm)
     rem_countors = [False] * len(countours)
@@ -441,8 +441,7 @@ def LargestContour(img):
             ret = contour
 
     if(len(ret) == 0):
-        img = 125
-        return img
+        return ret
 
     l = round(np.min(ret[:, 1]))
     r = round(np.max(ret[:, 1]))

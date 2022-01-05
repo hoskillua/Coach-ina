@@ -22,7 +22,7 @@ def OverLapping(path, modelPath):
 
     features = []
     for symbol in symbolesList:
-        io.imshow(symbol[0]); io.show()
+        # io.imshow(symbol[0]); io.show()
         prediction, prob = predict(symbol[0], modelPath)
         if (prob > 0.8):
             prediction = classification_mapping(prediction)
@@ -30,8 +30,8 @@ def OverLapping(path, modelPath):
     cards = grouping(features)
     print("Cards are:", cards)
     print("Total Number of Cards:", len(cards))
-    io.imshow(image)
-    io.show()
+    # io.imshow(image)
+    # io.show()
 
 
 def NonOverLapping(path, modelPath):
@@ -43,12 +43,12 @@ def NonOverLapping(path, modelPath):
     cards = []
 
     for corner in splitedCorners:
-        io.imshow(corner[0]/255.0)
-        io.show()
-        io.imshow(corner[1]/255.0)
-        io.show()
-        p1 = predict(corner[0]/255.0, modelPath)
-        p2 = predict(corner[1]/255.0, modelPath)
+        # io.imshow(corner[0]/255.0)
+        # io.show()
+        # io.imshow(corner[1]/255.0)
+        # io.show()
+        p1,prop1 = predict(corner[0]/255.0, modelPath)
+        p2,prop2 = predict(corner[1]/255.0, modelPath)
 
         p1 = classification_mapping(p1)
         p2 = classification_mapping(p2)
@@ -60,9 +60,9 @@ def NonOverLapping(path, modelPath):
 
 def main():
 
-    path = "Grouping/cards5.jpg"
+    path = "TestCases/OverLapping/12.jpg"
     modelPath = "Model/KNN_model.joblib"
-    AlgoNum = 1
+    AlgoNum = 0
 
     if(AlgoNum == 0 or AlgoNum == 2):
         OverLapping(path, modelPath)
