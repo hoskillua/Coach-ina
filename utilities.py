@@ -64,8 +64,9 @@ def connected_components(img):
 
 def getSymboles(image):
     k = 0
-    img = skimage.exposure.equalize_adapthist(image)
-    
+    # img = skimage.exposure.equalize_adapthist(image)
+    img=image
+
     if np.shape(img)[0] > 500 and np.shape(img)[1] > 500:
         img = skimage.morphology.erosion(image + 0.0)
 
