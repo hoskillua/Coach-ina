@@ -1,5 +1,6 @@
 # imports
 import os
+import sys
 from matplotlib import pyplot as plt
 from skimage.color import rgb2gray
 from skimage import data, io, filters, feature, measure, transform, morphology
@@ -152,8 +153,8 @@ def predict(image, modelPath='model/KNN_model.joblib'):
     # load the model
     model = load(modelPath)
     prediction =  model.predict([image.flatten()])[0]
-    probabilities = model.predict_proba([image.flatten()])[0]
-    classIndex =  np.where(model.classes_ == prediction)[0]
+    # probabilities = model.predict_proba([image.flatten()])[0]
+    # classIndex =  np.where(model.classes_ == prediction)[0]
 
     return prediction, 1  # probabilities[classIndex]
 
