@@ -22,6 +22,7 @@ from sklearn.neighbors import KNeighborsClassifier
 import cv2
 import sys
 
+
 def segmentation(img):
     th = threshold_otsu(img)
     img1 = img > th
