@@ -1,6 +1,11 @@
 import sys
 
 
+def classification_mapping(classification):
+    if classification != '10':
+        return classification[0].upper()
+
+
 def isSymbol(variable):
     letters = ['C', 'S', 'D', 'H']
     if (variable[0] in letters):
@@ -58,38 +63,22 @@ features = [
     ('K', 214, 471)
 ]
 
-# features = [
-#     ('A', 790, 70),
-#     ('A', 810, 330),
-#     ('A', 440, 130),
-#     ('Q', 290, 179),
-#     ('10', 200, 220),
-#     ('K', 150, 280),
-#     ('J', 135, 340),
-#     ('H', 275, 250),
-#     ('H', 240, 295),
-#     ('D', 245, 355),
-#     ('S', 355, 195),
-#     ('S', 410, 170),
-#     ('C', 465, 155),
-#     ('C', 850, 100),
-#     ('C', 800, 200),
-#     ('C', 750, 310),
-# ]
+def grouping(features):
+    symbols = list(filter(isSymbol, features))
+    numbers = list(filter(isNumber, features))
 
-symbols = list(filter(isSymbol, features))
-numbers = list(filter(isNumber, features))
+    minDists = [('-1', sys.maxsize)] * len(numbers)
 
-minDists = [('-1', sys.maxsize)] * len(numbers)
+    cards = [()] * len(numbers)
+    for n in range(len(numbers)):
+        for s in range(len(symbols)):
+            dist = (numbers[n][1] - symbols[s][1]) ** 2 + \
+                (numbers[n][2] - symbols[s][2]) ** 2
+            if dist < minDists[n][1]:
+                minDists[n] = (symbols[s][0], dist)
+        cards[n] = (numbers[n][0], minDists[n][0])
 
-for n in range(len(numbers)):
-    for s in range(len(symbols)):
-        dist = (numbers[n][1] - symbols[s][1]) ** 2 + \
-            (numbers[n][2] - symbols[s][2]) ** 2
-        if dist < minDists[n][1]:
-            minDists[n] = (symbols[s][0], dist)
-    numbers[n] = (numbers[n][0], minDists[n][0])
+    print(set(cards))
 
-print(set(numbers))
 
-#Data = [(A,S),(2,D),(3,S),(4,H),(5,C)]
+grouping(features)
