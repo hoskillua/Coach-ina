@@ -50,9 +50,9 @@ def NonOverLapping(path,modelPath):
 
 def main():
 
-    path="../special/QC15.jpg"
+    path="Grouping\cards4.jpg"
     modelPath="Model/model.joblib"
-    AlgoNum=1
+    AlgoNum=0
 
     if(AlgoNum==0 or AlgoNum==2):
         OverLapping(path,modelPath)
@@ -61,11 +61,11 @@ def main():
 
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
-    try:
-        pass
+#     try:
+#         pass
 
-    except:
-        print("Sea7k trb")
+#     except:
+#         print("Sea7k trb")
