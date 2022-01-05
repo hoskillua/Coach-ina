@@ -20,6 +20,7 @@ from skimage.transform import AffineTransform, rotate, warp
 from sklearn import preprocessing
 from sklearn.neighbors import KNeighborsClassifier
 import cv2
+import sys
 
 def segmentation(img):
     th = threshold_otsu(img)
