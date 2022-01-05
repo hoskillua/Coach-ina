@@ -17,8 +17,8 @@ def OverLapping(path,modelPath):
     symbolesList = getSymboles(image)
     features = []
     for symbol in symbolesList:
-        io.imshow(symbol[0]) 
-        io.show()
+        # io.imshow(symbol[0]) 
+        # io.show()
         prediction = predict(symbol[0],modelPath)
         prediction = classification_mapping(prediction)
         features.append((prediction, symbol[1], symbol[2]))
@@ -52,9 +52,9 @@ def NonOverLapping(path,modelPath):
 
 def main():
 
-    path="Grouping/AcetoFive.jpeg"
-    modelPath="Model/SVC_model.joblib"
-    AlgoNum=0
+    path="../special/QC15.jpg"
+    modelPath="Model/model.joblib"
+    AlgoNum=1
 
     if(AlgoNum==0 or AlgoNum==2):
         OverLapping(path,modelPath)
