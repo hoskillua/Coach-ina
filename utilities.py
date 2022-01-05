@@ -16,6 +16,7 @@ from skimage.filters import threshold_otsu
 from joblib import load
 import sys
 import skimage.io as io
+from sklearn.neighbors import KNeighborsClassifier
 
 
 def segmentation(img):
@@ -147,7 +148,10 @@ def predict(image, modelPath='model/KNN_model.joblib'):
     # load the model
     model = load(modelPath)
     prediction = model.predict([image.flatten()])[0]
-    return prediction
+    # probabilities = model.predict_proba([image.flatten()])[0]
+    # classIndex =  np.where(model.classes_ == prediction)[0]
+
+    return prediction, 1  # probabilities[classIndex]
 
 
 # map the classes names
@@ -197,8 +201,8 @@ def grouping(features):
 MAX_ANGLE = 160
 MIN_ANGLE = 20
 
-MAX_AREA = 5000000
-MIN_AREA = 10000
+MAX_AREA = 0
+MIN_AREA = 0
 
 TRANS_CARD_HIEGHT = 350
 TRANS_CARD_WIDTH = 250
@@ -257,6 +261,14 @@ def CalcArea(x, y):
 
 ###Preprocessing Step###
 def preprocessingStep(img):
+
+    global MAX_AREA, MIN_AREA
+
+    h = img.shape[0]
+    w = img.shape[1]
+
+    MAX_AREA = 0.314*w*h
+    MIN_AREA = 0.014*w*h
 
     grayImg = rgb2gray(img)
 

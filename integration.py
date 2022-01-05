@@ -17,17 +17,20 @@ def OverLapping(path, modelPath):
         greyImage = image
     else:
         greyImage = getGreyImage(image)/255.0
+
     symbolesList = getSymboles(greyImage)
+
     features = []
     for symbol in symbolesList:
-        io.imshow(symbol[0])
-        io.show()
-        prediction = predict(symbol[0], modelPath)
-        prediction = classification_mapping(prediction)
-        features.append((prediction, symbol[1], symbol[2]))
+        prediction, prob = predict(symbol[0], modelPath)
+        if (prob > 0.8):
+            prediction = classification_mapping(prediction)
+            features.append((prediction, symbol[1], symbol[2]))
     cards = grouping(features)
     print("Cards are:", cards)
     print("Total Number of Cards:", len(cards))
+    io.imshow(image)
+    io.show()
 
 
 def NonOverLapping(path, modelPath):
@@ -55,9 +58,10 @@ def NonOverLapping(path, modelPath):
 
 
 def main():
-    path = "Grouping/hand-cards-trump-spades.jpg"
+
+    path = "../special/QC15.jpg"
     modelPath = "Model/model.joblib"
-    AlgoNum = 0
+    AlgoNum = 1
 
     if(AlgoNum == 0 or AlgoNum == 2):
         OverLapping(path, modelPath)
