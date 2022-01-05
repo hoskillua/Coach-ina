@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+Model/KNN_model.joblib
+
+.jpg
+Grouping/imgs/
+Model/dataSet/
