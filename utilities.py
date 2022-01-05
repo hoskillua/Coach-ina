@@ -17,7 +17,7 @@ from joblib import load
 import sys
 import skimage.io as io
 from sklearn.neighbors import KNeighborsClassifier
-
+import cv2
 
 def segmentation(img):
     th = threshold_otsu(img)
@@ -75,7 +75,7 @@ def getGreyImage(image):
     R = image[:, :, 0]
     G = image[:, :, 1]
     B = image[:, :, 2]
-    mask = (R - G > 100) & (R - B > 100)
+    mask = (R - G > 70) & (R - B > 70)
     R[mask] = 0
     return rgb2gray(image).astype(float)
 
@@ -84,11 +84,13 @@ def getSymboles(image):
     k = 0
     img = image
 
-    if np.shape(img)[0] > 500 and np.shape(img)[1] > 500:
-        img = skimage.morphology.erosion(img + 0.0)
+    # if np.shape(img)[0] > 500 and np.shape(img)[1] > 500:
+    #     img = skimage.morphology.erosion(img + 0.0)
 
     img = skimage.filters.gaussian(img, sigma=2)
     segm = segmentation(img)
+    
+    io.imshow(segm); io.show()
 
     countours = contour_detection(segm)
     rem_countors = [False] * len(countours)
@@ -383,7 +385,7 @@ def perspectiveStep(cards, img):
 
 def GetCorner(transImg):
 
-    corner = transImg[10:CORNER_HIEGHT, 10:CORNER_WIDTH]
+    corner = transImg[10:CORNER_HIEGHT, 5:CORNER_WIDTH]
 
     grayCorner = rgb2gray(corner)
 
