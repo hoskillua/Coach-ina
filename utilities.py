@@ -64,8 +64,9 @@ def connected_components(img):
 
 def getSymboles(image):
     k = 0
-    img = skimage.exposure.equalize_adapthist(image)
-    
+    # img = skimage.exposure.equalize_adapthist(image)
+    img=image
+
     if np.shape(img)[0] > 500 and np.shape(img)[1] > 500:
         img = skimage.morphology.erosion(image + 0.0)
 
@@ -167,3 +168,252 @@ def grouping(features):
     return set(cards) 
     
 
+############################################## Non Overlapping Algo  #######################################################################################
+
+###Imports###
+from skimage import data, io, filters, feature, measure, transform, morphology
+from skimage.color import rgb2gray
+from matplotlib import pyplot as plt
+import numpy as np
+import cv2
+import os
+
+####Algo Constants###
+MAX_ANGLE=160
+MIN_ANGLE=20
+
+MAX_AREA=5000000
+MIN_AREA=10000
+
+TRANS_CARD_HIEGHT=350
+TRANS_CARD_WIDTH=250
+
+CORNER_HIEGHT=100
+CORNER_WIDTH=42
+CORNER_THRESH=60
+
+SYMBOL_WIDTH=30
+SYMBOL_HEIGHT=40
+
+SUIT_BEGIN=40
+RANK_END=50
+
+###Helper Functions###
+
+#calculate the distance between two points
+def CalcDist(p1,p2):
+    p1=np.copy(p1)
+    p2=np.copy(p2)
+    dist=np.sqrt((((p1-p2)**2).sum()))
+    return dist
+
+#calculate the perimeter of a contour
+def CalcPerimeter(contour):
+    ret=0
+    prev=contour[-1]
+    for cur in contour:
+        ret+=CalcDist(cur,prev)
+        prev=cur
+    return ret
+
+#caculate angle of three points using law of cosines
+#arccos((P12^2 + P13^2 - P23^2) / (2 * P12 * P13))
+def CalcAngle(points):
+    p12=CalcDist(points[0],points[1])
+    p13=CalcDist(points[2],points[1])
+    p23=CalcDist(points[0],points[2])
+
+    angle=np.arccos((p12**2+p13**2-p23**2)/(2*p12*p13))
+    return angle*180/np.arccos(-1)
+
+#caculate Area a polygon using Shoelace formula
+def CalcArea(x,y):
+    area=0.5*np.abs(np.dot(x,np.roll(y,1))-np.dot(y,np.roll(x,1)))
+    return area
+
+
+###Preprocessing Step###
+def preprocessingStep(img):
+
+    grayImg=rgb2gray(img)
+    
+    if(np.max(grayImg) < 1.01):
+        grayImg=grayImg*255
+        
+    gaussedImg=filters.gaussian(grayImg)
+
+    addedConst=0
+    thresh=filters.threshold_otsu(grayImg)+addedConst
+    threImg=np.copy(gaussedImg)
+    threImg[threImg>thresh]=255
+    threImg[threImg<=thresh]=0
+    
+    return threImg
+
+###Find and Filter Contours###
+
+#check if the contour is likely to be a card
+def CheckContour(contour):
+    
+    if(len(contour)!=5):
+        return False
+    
+    area=CalcArea(contour[:4,1],contour[:4,0])
+    if(area > MAX_AREA or area < MIN_AREA):
+        return False
+    
+    points=np.copy(contour)
+    points=np.vstack([points, points[1]])    
+    
+    for i in range(4):
+        angle=CalcAngle(points[i:i+3])
+        if(angle >MAX_ANGLE or angle < MIN_ANGLE):
+            return False
+    
+    return True
+
+#get candidate cards
+def findCardsStep(threImg):
+    
+    contours=measure.find_contours(threImg)
+
+    cards=[]
+    for contour in contours:
+        perimeter=CalcPerimeter(contour)
+        approx=measure.approximate_polygon(contour,.08*perimeter)
+        if(CheckContour(approx)==True):
+            cards.append(approx)
+            
+    return cards
+
+###Sort Card Corners###
+
+#sort the corners of the card
+def SortCorners(approxContour):
+    
+    corners=np.copy(approxContour[:4])
+    
+    maxIndx=0
+    maxDis=0
+    
+    for i in range(4):
+        dis=CalcDist(corners[i],corners[(i+1)%4])
+        if(dis > maxDis):
+            maxIndx=i
+            maxDis=dis
+       
+    shift=0
+    if(CalcDist(corners[maxIndx],corners[(maxIndx+1)%4]) <  CalcDist(corners[(maxIndx+1)%4],corners[(maxIndx+2)%4])):
+        shift=maxIndx
+    else:
+        shift=maxIndx+1
+        
+    corners=np.roll(corners,-shift,axis=0)
+    
+    return corners
+
+###Perspective Transform Step###
+
+def perspectiveStep(cards,img):
+
+    transCards=[]
+    
+    for card in cards:
+        dst=(SortCorners(card))[:,[1,0]].astype(int)
+        src=np.array([
+            [0,0],
+            [TRANS_CARD_WIDTH,0],
+            [TRANS_CARD_WIDTH,TRANS_CARD_HIEGHT],
+            [0,TRANS_CARD_HIEGHT]
+        ])
+        transMatrix=transform.ProjectiveTransform()
+        transMatrix.estimate(src,dst)
+        warpedImg=transform.warp(img,transMatrix,output_shape=(TRANS_CARD_HIEGHT,TRANS_CARD_WIDTH))
+        transCards.append(warpedImg)
+        
+    return transCards
+
+### Cut and Threshold the Top Left Corner
+
+#get the rank,suit
+
+def GetCorner(transImg):
+
+    corner=transImg[10:CORNER_HIEGHT,10:CORNER_WIDTH]
+
+    grayCorner=rgb2gray(corner)
+    
+    if(np.max(grayCorner) < 1.01):
+        grayCorner=grayCorner*255  
+    
+    thresh=filters.threshold_otsu(grayCorner)
+    
+    threCorner=grayCorner.copy()
+    threCorner[threCorner>=thresh]=255
+    threCorner[threCorner<thresh]=0
+    
+    return threCorner
+    
+###Integrate and Get Corners###
+
+def applyAlgo(img):
+    threImg=preprocessingStep(img)
+    cards=findCardsStep(threImg)
+    transCards=perspectiveStep(cards,img)
+
+    ret=[]
+    for transCard in transCards:
+       ret.append(GetCorner(transCard))
+    
+    return ret
+    
+###Get the Largest Contour In The Corner -> which is the wanted symbol###
+
+#get largest contour
+def LargestContour(img):
+    
+    contours=measure.find_contours(img)
+
+    maxArea=0
+    ret=[]
+    for contour in contours:
+        area=CalcArea(contour[:,1],contour[:,0])
+        if(area>maxArea):
+            maxArea=area
+            ret=contour
+    
+    if(len(ret)==0):
+        img=125
+        return img
+
+    l=round(np.min(ret[:,1]))
+    r=round(np.max(ret[:,1]))
+    t=round(np.min(ret[:,0]))
+    b=round(np.max(ret[:,0]))
+
+    img=img[t:b,l:r]
+    img = cv2.resize(img, (SYMBOL_WIDTH,SYMBOL_HEIGHT), 0, 0)
+
+    return img
+
+###Apply The Non Overlapping Algo On An Image###
+
+def ApplyOnImage(image):
+
+    corners=applyAlgo(image)
+
+    splitedCorners=[]
+
+    for corner in corners:
+        rankImg=corner[:RANK_END,:]
+        suitImg=corner[SUIT_BEGIN:,:]
+
+        rankImg=LargestContour(rankImg)
+        suitImg=LargestContour(suitImg)
+
+        splitedCorners.append((rankImg,suitImg))
+
+    return splitedCorners
+
+
+        
