@@ -26,9 +26,8 @@ pip3 install -r requirements.txt
 ```
 python3 integration.py
 ```
+Project Structure
 
-mostafa@mostafawael:/media/mostafa/CUFE/CMP3/Image Processing/Project/Coach-ina$ 
-> tree
 ```
 .
 ├── dataSet
@@ -243,22 +242,7 @@ mostafa@mostafawael:/media/mostafa/CUFE/CMP3/Image Processing/Project/Coach-ina$
 │   │   └── 9.jpg
 │   └── RandomImages
 │       ├── 1200px-7_playing_cards.jpg
-│       ├── 1.jpeg
-│       ├── 2.jpg
-│       ├── 3.jpg
-│       ├── 4.jpg
-│       ├── AcetoFive.jpeg
-│       ├── atef.jpg
-│       ├── cards2.png
-│       ├── cards3.jpeg
-│       ├── cards4.jpg
-│       ├── cards5.jpg
-│       ├── cards6.jpg
-│       ├── Cars46.png
-│       ├── depositphotos_21549311-stock-photo-playing-cards-in-hand.jpg
-│       ├── hand-cards-trump-spades.jpg
-│       ├── istockphoto-496913440-170667a.jpg
-│       ├── Skatblatt_02.jpg
+|       |   --------------------------
 │       └── st040.jpg
 ├── integration.py
 ├── LICENSE
