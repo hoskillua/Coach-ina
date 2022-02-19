@@ -1,12 +1,31 @@
-# Coach-ina
-A playing cards cross-platform application that coach you in your game and suggests the best move!
+<h1 align="center">
+  Coach-ina
+</h1>
+<p align="center">
+  <a style="text-decoration:none" >
+    <img src="https://img.shields.io/badge/Detection & Logic-Python-blue" alt="Parser Badge" />
+  </a>
+  <a style="text-decoration:none" >
+    <img src="https://img.shields.io/badge/Frontend-Flutter-cyan" alt="Language Badge" />
+  </a>
+    <a style="text-decoration:none" >
+    <img src="https://img.shields.io/badge/Backend-Flask-cyan" alt="Language Badge" />
+  </a>
+  <a style="text-decoration:none" >
+    <img src="https://img.shields.io/badge/Container-Docker-green" alt="Simulation Tool Badge" />
+  </a>
+</p>
+<hr/>
+
+A playing cards cross-platform application that uses taken pictures of the cards by you, detects the cards, and coaches you in your game and suggests the best move!
+
+## Some Examples
 
 https://user-images.githubusercontent.com/56788883/154695744-95fc1fa8-c6bf-4388-b01b-248c7436c32b.mp4
+
 > It currently sypports two games: Kings and Ground Similarity.
 
-
-Detecting the Cards
----
+### Detecting the Cards
 
 <div >
   <p  align="center">
@@ -26,9 +45,19 @@ pip3 install -r requirements.txt
 ```
 python3 integration.py
 ```
-Project Structure
 
-```
+# Description
+
+## Project Structure
+
+<details><summary>root</summary><blockquote>
+<details><summary>dataSet</summary><blockquote>
+content
+</blockquote></details>
+medhat
+<br>
+hamada
+</blockquote></details>
 .
 ├── dataSet
 │   ├── image_change.py
@@ -350,6 +379,11 @@ Project Structure
 └── utilities.py
 
 110 directories, 4764 files
-```
 
+## Papers references
 
+1- Hands on Machine Learning with Scikit-learn, keras, and tensorflow textbook, Chapter 5 Support Vector Machines.
+
+2- Single-image Background Removal with Entropy Filtering Paper.
+
+3- G. Kumar and P. K. Bhatia, "A Detailed Review of Feature Extraction in Image Processing Systems," 2014 Fourth International Conference on Advanced Computing & Communication Technologies, 2014, pp. 5-12, doi: 10.1109/ACCT.2014.74.
