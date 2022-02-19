@@ -48,6 +48,76 @@ python3 integration.py
 
 # Description
 
+Smart Card Game: The main idea of the project is to build a program that helps you win a card game, all you have to do is to send two images one for the cards in the ground and another one for the cards in your hand and the program will indicate the most promising move to take.
+
+Our application has 2 main pipelines, one for hand cards and the other one is for ground cards. User chooses through the application which type of cards it is that they will take a picture of.
+
+```
+             -> Ground: Non-overlapping Detection -|
+Image     -> |                                     -> KNN Model -|
+From App     -> Hand: Overlapping Detection —------|             |
+                                                                 |
+Best Move Shown On App <- Game Logic <- Matching Suits to Ranks <-
+```
+
+## Card Detection Pipeline
+
+0. Image Enhancement: Convert to grayscale and then Gaussian Filter.
+
+_`(Only on Non-overlapping Cards):`_
+
+If it is a ground cards image:
+
+1. Segmentation: Otsu’s Thresholding.
+2. Contour Detection.
+3. Contour Approximation and Filtering: Approximates contours to a low number of points, filters 4-point contours by angles and area, then, sorts 4-point to get the right orientation of each card.
+4. Inverse Perspective Transformation: to get an image of each card.
+5. Cropping to get the top left corner: separates rank and suit, then a contour detection is applied and the largest area contour is selected for each of the rank and suit. This output is delivered to the model.
+
+_`(Handling Overlaps):`_
+
+If it is a hand cards image:
+
+1. Segmentation: Otsu’s Thresholding
+2. Contour Detection.
+3. Contour Filtering:
+
+- Filter out too large or too small contours relative to image area
+- Filter out contours with too high or low aspect ratio
+- Filter out contours with too low number of points relative to image
+  perimeter
+- For contours inside of others, only one of the outside or inside contours is  
+   selected based on area ratio.
+
+4. For each passing contour: the original image is cropped to contour bounding box, thresholding is applied, checks for number of connected components in cropped image via **DFS** and number of black pixels in these components. These computations are used to filter out some Noise and textures.
+
+## Learning Model
+
+We tried several ML algorithms to classify the detected symbols.
+The data was manually collected and augmentation techniques were used to overcome data shortage problems.
+
+1. KNN: the chosen algorithm as it has the least training time and resulted in the highest accuracy.
+2. SVM: we have tried using SVM but the model took too much time to train and resulted in some sort of overfitting.
+3. Random Forest: same issues as SVM.
+
+## Matching Classified Symbols
+
+A simple matching algorithm is implemented that matches each classified rank with the classified suit closest to it (Euclidean distance between centroids).
+
+## Game Logic
+
+We implemented 2 game logic systems to return the next move for the player:
+
+1. Kings Game: Matches pairs of cards of the same rank and returns a list of pairs (عملية التفنيط في لعبة الشايب)
+2. Hand Ground Matcher: Returns the max score card to be played from hand on a card on the ground, a max score is defined as the sum of ranks of two cards from the same suit, if no suits coincide between hand and ground, returns an empty pair.
+
+## Application:
+
+1. Mobile Application using Flutter, for the Game, when the user enters the game, it choose the Game mode between two modes: King, and Hand Ground Matcher, then it will be navigated to the Game Page, it upload hand image in case of king, and hand, and ground images on case of hand ground matcher, and it get the best thing to play.
+2. Backend: Implemented using Flask API, gets the images, and game type, and returns the best move.
+3. Docker: Containerized using Docker.
+4. Google Cloud Platform VM instance for deploying the model.
+
 ## Project Structure
 
 <details><summary> dataSet</summary><blockquote>
