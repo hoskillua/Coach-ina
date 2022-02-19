@@ -348,14 +348,14 @@ We implemented 2 game logic systems to return the next move for the player:
 <details><summary> Grouping</summary><blockquote>
 <br>GroundRemoval.ipynb
     <details><summary>imgs</summary><blockquote>
-│   │   ├── 0.jpg
-│   |   |-----------
-│   │   └── 9.jpg
+    <br>0.jpg
+    <br>--------
+    <br>9.jpg
     </blockquote></details>
     <details><summary>RandomImages</summary><blockquote>
-│       ├── 1200px-7_playing_cards.jpg
-|       |   --------------------------
-│       └── st040.jpg
+    <br>1200px-7_playing_cards.jpg
+    <br>--------------------------
+    <br>st040.jpg
     </blockquote></details>
 </blockquote></details>
 <details><summary> integration.py</summary><blockquote>
@@ -427,9 +427,9 @@ We implemented 2 game logic systems to return the next move for the player:
 <br>dataSet.zip
 <br>KNN_model.joblib
     <details><summary>Models</summary><blockquote>
-│   │   ├── KNN_model.joblib
-│   │   ├── rf_model.joblib
-│   │   └── SVC_model.joblib
+    <br>KNN_model.joblib
+    <br>rf_model.joblib
+    <br>SVC_model.joblib
     </blockquote></details>
 <br>modelTrain.py
 </blockquote></details>
@@ -456,25 +456,25 @@ We implemented 2 game logic systems to return the next move for the player:
 <br>requirments.txt
 <br>rf_model.joblib
     <details><summary>server_files</summary><blockquote>
-│   │   ├── app.py
-│   │   ├── Dockerfile
-│   │   ├── model.py
-│   │   ├── requirments.txt
-│   │   └── rf_model.joblib
+    <br>app.py
+    <br>Dockerfile
+    <br>model.py
+    <br>requirments.txt
+    <br>rf_model.joblib
     </blockquote></details>
 <br>SVC_model.joblib
 </blockquote></details>
 <details><summary> TestCases</summary><blockquote>
     <details><summary>NonOverLapping</summary><blockquote>
-│   │   ├── 10.jpeg
-│       -----------
-│   │   └── 9.jpeg
+    <br>10.jpeg
+    <br>-------
+    <br>9.jpeg
     </blockquote></details>
     <details><summary>OverLapping</summary><blockquote>
-│       ├── 10.jpeg
-│       -----------
-│       ├── 8.jpeg
-│       └── 9.jpeg
+    <br>10.jpeg
+    <br>-------
+    <br>8.jpeg
+    <br>9.jpeg
     </blockquote></details>
 </blockquote></details>
 <details><summary> utilities.py</summary><blockquote>
