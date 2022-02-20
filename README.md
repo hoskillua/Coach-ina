@@ -1,6 +1,15 @@
 <h1 align="center">
   Coach-ina
 </h1>
+ 
+<p align="center">
+  <b> A playing cards cross-platform application that coaches you in your game and suggests the best move!
+ </b>
+   <a style="text-decoration:none" >
+    <img src="https://user-images.githubusercontent.com/56788883/154840069-82901906-ec29-41e5-a0e7-c60a2ab66d2f.png" alt="Parser Badge" />
+  </a>
+</p>
+
 <p align="center">
   <a style="text-decoration:none" >
     <img src="https://img.shields.io/badge/Detection & Logic-Python-blue" alt="Parser Badge" />
@@ -17,13 +26,13 @@
 </p>
 <hr/>
 
-A playing cards cross-platform application that uses taken pictures of the cards by you, detects the cards, and coaches you in your game and suggests the best move!
 
-## Some Examples
+
+## Demo
 
 https://user-images.githubusercontent.com/56788883/154695744-95fc1fa8-c6bf-4388-b01b-248c7436c32b.mp4
 
-> It currently sypports two games: Kings and Ground Similarity.
+> It currently sypports two games: "Kings" and "Ground Similarity".
 
 ### Detecting the Cards
 
